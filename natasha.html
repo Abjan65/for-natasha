@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nat's World</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0d;
+            --card-bg: #16161a;
+            --pink: #ff4a9d;
+            --violet: #8b5cf6;
+            --purple: #a855f7;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 20px rgba(255, 74, 141, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .app-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .app-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Timeline Cards */
+        .timeline-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--pink);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .timeline-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .timeline-chapter {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--pink);
+            font-weight: 700;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .timeline-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .timeline-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e5e7eb;
+        }
+
+        /* Blueprint Trait List */
+        .trait-item {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .trait-icon {
+            font-size: 1.3rem;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 8px;
+            border-radius: 10px;
+            color: var(--violet);
+            line-height: 1;
+        }
+
+        .trait-text h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .trait-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Generator Screen */
+        .generator-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .reason-box {
+            background-color: var(--card-bg);
+            border: 2px dashed var(--pink);
+            border-radius: 20px;
+            padding: 30px 20px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f3f4f6;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(255, 74, 141, 0.05);
+            line-height: 1.5;
+        }
+
+        .gen-btn {
+            background: linear-gradient(135deg, var(--pink), var(--violet));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 74, 141, 0.3);
+            transition: transform 0.1s ease;
+        }
+
+        .gen-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Playlist */
+        .playlist-item {
+            background-color: var(--card-bg);
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .song-info h4 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .song-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .song-vibe {
+            font-size: 0.75rem;
+            background: rgba(168, 85, 247, 0.15);
+            color: #d8b4fe;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Memories Placeholder */
+        .memories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .memory-placeholder {
+            background-color: var(--card-bg);
+            border: 2px dashed rgba(255,255,255,0.1);
+            aspect-ratio: 1;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        /* Bottom Nav Bar */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #121214;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            gap: 5px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: var(--pink);
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Universal Inline Editor UI placeholder */
+        .add-more-footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+            border-top: 1px dashed rgba(255,255,255,0.05);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="header-title">Nat this is for you</h1>
+        <p>Let's create lasting memories together.</p>
+    </header>
+
+    <div class="container">
+        
+        <section id="timeline" class="app-section active">
+            <div id="timeline-list"></div>
+            <div class="add-more-footer">More chapters will be added as our story continues... 🥀</div>
+        </section>
+
+        <section id="blueprint" class="app-section">
+            <div id="blueprint-list"></div>
+            <div class="add-more-footer">Adding more traits as I get to know you better, Natasha... 😌</div>
+        </section>
+
+        <section id="generator" class="app-section">
+            <div class="generator-container">
+                <div class="reason-box" id="reason-display">Tap the button below to see a reason... ✨</div>
+                <button class="gen-btn" onclick="generateReason()">Tap for a Reason I Like/Love You</button>
+            </div>
+        </section>
+
+        <section id="playlist" class="app-section">
+            <div id="playlist-list"></div>
+            <div class="add-more-footer">Same taste in music  😇does the trick! 🎧</div>
+        </section>
+
+        <section id="memories" class="app-section">
+            <div class="memories-grid">
+                <div class="memories-grid">
+    <img src="https://i.postimg.cc/FHL2mZRR/20260419-130331.jpg" alt="Memory 1">
+    <img src="https://i.postimg.cc/6q6XpGPS/20260418-181815-resized.jpg" alt="Memory 2">
+    <img src="https://i.postimg.cc/Twf8tDTQ/20260415-151702.jpg" alt="Memory 3">
+    <img src="https://i.postimg.cc/DZkfn0nm/20260421-180857.jpg" alt="Memory 4">
+</div>
+
+            <div class="add-more-footer">Placeholder for our future sunset snaps together... 🌇</div>
+        </section>
+
+    </div>
+
+    <nav>
+        <button class="nav-item active" onclick="switchTab('timeline', this)">
+            <span class="nav-icon">📖</span><span>Timeline</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('blueprint', this)">
+            <span class="nav-icon">✨</span><span>Blueprint</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('generator', this)">
+            <span class="nav-icon">💖</span><span>Reasons</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('playlist', this)">
+            <span class="nav-icon">🎵</span><span>Playlist</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('memories', this)">
+            <span class="nav-icon">🖼️</span><span>Memories</span>
+        </button>
+    </nav>
+
+    <script>
+        // DATA ARRAYS PULLING ENTIRELY FROM YOUR INPUT
+        const timelineData = [
+            { ch: "Chapter 1", date: "20th Jan", title: "Two of Us?", story: "When I first saw you, I thought there were two of you! I thought you guys were twins. I saw you with a marvin and a leso around your waist, and then I saw you again without them. I kept staring at you every day until it felt creepy, but I just couldn't stop seeing how your face lit up and how much of an angel you looked like. Then this day came—I was looking after grandma's cows in the morning and I saw your face. The sun was shining on you and you looked ✨️ 😍 gorgeous, amazing, nice, pretty, beautiful—I mean all those words 😉 😀—and my head was just like wooooow. I didn't know what to say to you, I just sat there staring 😅😂." },
+            { ch: "Chapter 2", date: "20th Jan", title: "The First Touch", story: "The first time I touched your hand was this morning. You came to grandma's place and I was just there, and then I completely froze for almost a minute. Then you said hi and I handed my hand over, and that is when I actually knew I liked you. There was this strong energy surge through my whole body and I kept asking myself what was wrong with me. Ooooo, I forgot to mention that also this day, the SUN shone on your face again and all I could see was a good-looking angel 😇. It's like you were sent." },
+            { ch: "Chapter 3", date: "Jan / Feb", title: "The Weird \"Niaje\"", story: "I didn't talk to you for a while, but when I actually had the guts and courage to do so, I made it weird. I don't know if you remember this, Natasha, but it was the first time I actually talked to you. Ulikua unatokea kishagi na I stopped you and I said \"niaje, utakua free 7:30? You said no and I said ukiwa free utakam.\" That was like super weird and it came out wrong. I was supposed to ask your name, and then ask if you would ever want to hang out with me. But because I was so nervous 😓 I said everything wrong 😅. I couldn't sleep that night. All I was thinking was: did she notice I was weird? Is she going to tell her friends what I said? What will I say to her to make things right? But it passed and I think you didn't even notice... everything was normal like nothing happened. But my theory is that you were so excited that I talked to you, you didn't care what I said." },
+            { ch: "Chapter 4", date: "28th Jan", title: "The Rainy Dream", story: "You were in my dreams for like two weeks straight, but I didn't care cause I actually liked you. I'll tell you about this crazy day: it was raining and you were in school. It was around 3 PM so I went to sleep 😴 and I actually dreamt. In my dream, we were walking in the rain in the middle of the road and it was nighttime. Everything was quiet until you kissed me 💋 and I woke up so fast because I thought that was real. It turned out it was just a dream, so I walked outside and it was like 5:30 PM. To make things crazy, I saw you right there, ulikua unatokea shule. It was the exact same day I took those pictures. So it happened na I liked it. All I could think of all day was Nat, Nat, Nat." },
+            { ch: "Chapter 5", date: "7th Mar", title: "The Spanish Book", story: "This day came when I finally knew your name and I wanted to tell you how I feel. I didn't know a way to say it, so I wrote it down in a book in Spanish so no one would get it. On March 7th, I was at my quiet place in the morning; I was so confused and I just sat there quietly. (I hope to take you there someday, Nat.) I decided to go home. Later that evening while I was going on with my class, alikam kishagi na I had to get some spare change for her ndo arudi home. So I went. When I came back, you had read what was in my book and saw your name, and you wanted to know why your name was in my book. I translated what I had written and you were shocked? Maybe, I don't actually know 🤔. But your reaction was just what I didn't expect 😅." },
+            { ch: "Chapter 6", date: "March", title: "The Branch Cutter", story: "Since then, we started waving at each other without saying anything, then you started saying Hi and everything was great. Sometimes when you wouldn't wave, I'd be so frustrated thinking maybe I did something wrong. And sometimes I would just stare at you and forget that I should say HI or Helloo 😅. I remember the first time you waved after you knew I liked you—you waved like 3 times and I was too busy on my phone playing a game 😅😂. It was so cute 😍 🤧 and I wish every day that that moment should never end. I remember you finding a way to wave with all those bushes in your way. I even cut a few branches of trees to make sure that I see you and you see me clearly. I don't know if you remember this day, but I do and I will never forget it." },
+            { ch: "Chapter 7", date: "14th Mar", title: "Ruined Sunset", story: "I asked you if you would go watch the sunset with me. I knew you were gonna say no, but I just had to try and walk just beside you. But that day was ruined by your friend. I wanted just me and you to sit down quietly while watching the sunset, then I would have later asked you if the sunset 🌇 was beautiful, and then I would say, \"That's how you look\" 😅. But it got ruined. But there's a few things lazima uniambie: you gave me 2 looks that were so confusing, but it was cute though. First was when nilifungua gate. Uliniangalia na side eye then you smiled. Also, nikiwa on the phone with mom, you were looking straight into my eyes 👀 na I was so scared! It was like you knew something about me that I don't 😂😂. That day was cute and amazing despite being ruined na someone that I kinda hate 😅." },
+            { ch: "Chapter 8", date: "15th Mar", title: "Sisi na Sunset", story: "The next day, Sunday March 15th, I wanted to ask you again if you wanted to go watch the sunset, but kulikua na a lot going on that day. Then mkaniacha hapo tu kwa bench. You didn't even say you were leaving na I maybe have gotten mad. So I left and just sat down and watched the sunset on my own. Na that was the saddest day ever, maybe in my life. I was jealous that you were hanging out na Kim and bailed on me ukijua tu poa that I like you more than he will. That evening nilikuita and wanted to tell you that I felt kinda left out. Ilikua almost 7:20 PM na your dad was looking for you na I had to make it quick, so I said I was a little bit jealous. But in reality, nilikuanga so jealous that hata sikua nataka to talk to you. But nilirealize that if I do that, you probably won't even care. Then before you left, you said, \"USIJALI ALIKUA ANAREPLACE YA JANA.\" Somehow hizo words ilinicomfort. You said bye then headed home. I took those pictures that day. I went through a lot of emotions, but it is what happens when you are in LOVE." },
+            { ch: "Chapter 9", date: "Holidays", title: "Hiding Under the Cap", story: "You guys closed school na I was happy that maybe we were going to hang out, but a lot of events ilihappen through the whole holiday. I remember it was nighttime, maybe like 7:10ish, na I was from the shop na you came to say Hi na ulikua umeambua nywele and you looked woooow. My words were, \"Kumbe unakuanga umeficha hii yote na kofia,\" na you thought I was talking about your head, but when I said, \"You look definitely way more cute,\" you were shocked and didn't believe me. Also, there was this day I had to go home late in the evening na when I said that \"I still like you,\" you didn't believe me either, but there was that look in your eyes that said you were waiting for me to say it. We never hung out while school was closed, I don't know why, but I understand why it didn't happen." },
+            { ch: "Chapter 10", date: "Holidays", title: "Clear My Head", story: "I have to remind you of this day when you said you don't like going on walks, but then like a few days later, ilikua around 2 PM or almost 3 PM, I was just taking my usual walk to clear my head. Na you were behind me with Kim and I was just mad at you, but I couldn't show it because I can't make choices for you. Na later again nikirudi after like an hour, somehow tukapatana na I was on the phone with my sister. Na venye ulikua close to me, you gave me another weird look na you smiled. I remember I didn't smile back na for the rest of your way back home you did not look back like you used to. It got weird for like two days we didn't like wave at each other na I can't lie, venye I was thinking is maybe she doesn't want to talk to me again na it bothered me a lot. I couldn't sleep or do anything right 😅. You were just in my head. Na in my perspective, on how I looked at you, ulikua maybe so bothered na something but I didn't know what. I wanted to ask but I was kinda scared and also mad that you lied to me. So I didn't ask you anything." },
+            { ch: "Chapter 11", date: "Pre-Reopening", title: "Face Brightening Up", story: "Then ilikua imebaki like a week shule zireopen, na ulikua unaenda hizo side za uko juu na I thought it was the best opportunity to ask what's up. Your face was so dull 😑 and ulikua unakaa like some overthinking girl that doesn't know what to do. I kind of felt sad and I started blaming myself. So I saw you and said Hi and you replied with a Hi that was so not it. It's like hukua unataka kuisema. Then I waited for you to come back. Bado you had that dull face, but as soon as I talked to you and asked if you were okay, your face ilibrighten up na ulikua psyched ni kama you were waiting for me to say something. You even said we could hang tomorrow. I felt that warm fuzz in my stomach and I couldn't stop thinking about tomorrow all night. Tomorrow ilifika na we didn't hang. I think that maybe ulikua unangoja nikuite twende na we were both scared. It's like we were waiting on each other. Ulikua unangoja nikusignal twende na pia mi nilikua nangoja usignal me twende na it ended up us not hanging out. But it's cool though, najua kuna time well actually hangout and we won't be scared of each other." },
+            { ch: "Chapter 12", date: "Bonus", title: "The Shirt Incident", story: "I'm sorry about one thing though: IM SORRY YOU HAD TO SEE ME HALF NAKED WITHOUT MY SHIRT.IT WAS SO EARLY IN THE MORNING LIKE 6 a.m AND YOU WERE HEADING TO SCHOOL. 👀😂🤣" }
+        ];
+
+        const blueprintData = [
+            { trait: "You are pretty, beautiful, gorgeous,and perfect like an Angel.", desc: "It's just standard facts." },
+            { trait: "You are nice to everyone.", desc: "You have such a pure heart." },
+            { trait: "You don't give a shit about what people think about you.", desc: "I absolutely love that confidence about you." },
+            { trait: "Your eyes are like the moon on a clear night sky.", desc: "I could look into them forever." },
+            { trait: "You make me feel lucky.", desc: "Just being around you is a major win." },
+            { trait: "I feel comfortable around you.", desc: "I can completely be myself." },
+            { trait: "I feel like you understand me more than anyone.", desc: "It's a crazy, deep connection." },
+            { trait: "I once saw you dancing.", desc: "And you were absolutely great at it! 🤣" },
+            { trait: "I love your smile.", desc: "It literally makes my entire day." },
+            { trait: "You have a really beautiful smile.", desc: "A serious day-brightener." },
+            { trait: "Your hands are incredibly soft.", desc: "Holding them is the best feeling." },
+            { trait: "I think you are incredibly smart.", desc: "The perfect mix of brains and beauty." },
+            { trait: "You are not like everyone else.", desc: "You stand out completely." },
+            { trait: "You are more than just a young lady.", desc: "You're someone deeply special." },
+            { trait: "I think you have really nice boobs.", desc: "Had to say it! 😉" },
+            { trait: "Your voice is just great.", desc: "Absolute music to my ears." },
+            { trait: "You look fantastic in a skirt & your natural hair.", desc: "My absolute favorite look on you." },
+            { trait: "I'd like to take cute pictures of you someday.", desc: "Future memories incoming." },
+            { trait: "I like the way we stare at each other.", desc: "It is the cutest thing ever." }
+        ];
+
+        const playlistData = [
+            { title: "Ordinary", artist: "Alex Warren", vibe: "Walk Vibe" },
+            { title: "Dandelions", artist: "Ruth B", vibe: "Sunset Vibe" },
+            { title: "What makes you beautiful", artist: "One Direction", vibe: "Classic" },
+            { title: "Just the way you are", artist: "Bruno Mars", vibe: "Facts" },
+            { title: "Shivers", artist: "Ed Sheeran", vibe: "Upbeat Walk" },
+            { title: "For my hand", artist: "Ed Sheeran & Burna Boy", vibe: "Perfect Mix" },
+            { title: "Perfect", artist: "Ed Sheeran", vibe: "Slow Dance" },
+            { title: "Take me to the river", artist: "Alex Yurkiv", vibe: "Deep Vibe" },
+            { title: "Ocean eyes", artist: "Billie Eilish", vibe: "Staring Vibe" },
+            { title: "Die right here", artist: "David Hugo", vibe: "Emotional" },
+            { title: "Us in motion", artist: "Laswezo", vibe: "Smooth" },
+            { title: "Adore you", artist: "Harry Styles", vibe: "Pure Love" },
+            { title: "Treat you better", artist: "Shawn Mendes", vibe: "Protecting" },
+            { title: "Birds of a feather", artist: "Billie Eilish", vibe: "Together" },
+            { title: "Intentions", artist: "Justin Bieber", vibe: "Sweet" },
+            { title: "Sucker", artist: "Jonas Brothers", vibe: "Hooked" },
+            { title: "Wonderwall", artist: "Oasis", vibe: "Classic" },
+            { title: "I like you", artist: "Post Malone & Doja Cat", vibe: "Fun Vibe" },
+            { title: "If the world was ending", artist: "Julia Michaels", vibe: "Late Night" }
+        ];
+
+        const reasons = [
+            "I want you. JUST YOU.", "I will always love you.", "You make my day.", "You are just perfect.", "When you feel like crying, find me and we'll go to my special place and cry together",
+            "You and I will last forever.", "I want to treat you better.", "You will always look pretty.",
+            "I want what is best for you.", "I want to sit down and watch sunset with you.",
+            "I want to be there for you.", "On your bad days, I want you to talk to me.", "I stepped out of my comfort zone To talk to you"," I wish for you to be my +1",
+            "We'll figure out everything together.", "I'm childish around you meaning i can be myself .", "I think you are genuine and real .", "Its so easy to be around you", "I just smile when i see you ", "Your smile is just on another level. I forget everything when i see you smile ", "You are the type of girl i could speak to all day and night without getting bored","I want to stare at your face for hours", " If you had a phone i would send you millions of reels at 3:00 a.m", " I want to just annoy you "," Id like to kiss your pretty face sometime.","Can I like hug you whenever were alone  ?!"," I would like to hold your hand and never let go"
+        ];
+
+        // RENDER FUNCTIONS
+        function initApp() {
+            // Timeline
+            const tlList = document.getElementById('timeline-list');
+            timelineData.forEach(item => {
+                tlList.innerHTML += `
+                    <div class="timeline-card">
+                        <div class="timeline-meta">
+                            <span class="timeline-chapter">${item.ch}</span>
+                            <span class="timeline-date">${item.date}</span>
+                        </div>
+                        <h3>${item.title}</h3>
+                        <p>${item.story}</p>
+                    </div>`;
+            });
+
+            // Blueprint
+            const bpList = document.getElementById('blueprint-list');
+            blueprintData.forEach(item => {
+                bpList.innerHTML += `
+                    <div class="trait-item">
+                        <div class="trait-icon">✨</div>
+                        <div class="trait-text">
+                            <h4>${item.trait}</h4>
+                            <p>${item.desc}</p>
+                        </div>
+                    </div>`;
+            });
+
+            // Playlist
+            const plList = document.getElementById('playlist-list');
+            playlistData.forEach(item => {
+                plList.innerHTML += `
+                    <div class="playlist-item">
+                        <div class="song-info">
+                            <h4>${item.title}</h4>
+                            <p>${item.artist}</p>
+                        </div>
+                        <span class="song-vibe">${item.vibe}</span>
+                    </div>`;
+            });
+        }
+
+        // TAB NAVIGATION SYSTEM
+        function switchTab(sectionId, element) {
+            document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            element.classList.add('active');
+            
+            // Context header mapping
+            const titles = { timeline: "The Timeline", blueprint: "The Blueprint", generator: "Reasons Why", playlist: "Walk Playlist", memories: "Memories" };
+            document.getElementById('header-title').innerText = titles[sectionId];
+            window.scrollTo(0,0);
+        }
+
+        // REASON GENERATOR ACTION
+        function generateReason() {
+            const display = document.getElementById('reason-display');
+            const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.innerText = randomReason;
+                display.style.opacity = 1;
+            }, 150);
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
